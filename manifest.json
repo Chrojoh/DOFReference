@@ -2,7 +2,7 @@
   "name": "Scent Detection Rules Reference",
   "short_name": "Scent Rules",
   "description": "CKC and C-WAGS Scent Detection trial rules quick reference",
-  "start_url": "./ScentDetection_Rules_Reference.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#0e0804",

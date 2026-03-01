@@ -1,10 +1,8 @@
-const CACHE = 'dog-trial-ref-v2';
+const CACHE = 'dog-trial-ref-v3';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
   './icon-1024.png'
 ];
 

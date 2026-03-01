@@ -1,5 +1,5 @@
 {
-  "name": "Dog on Fun — Trial Rules Reference",
+  "name": "Dog Trial Rules Reference",
   "short_name": "Trial Ref",
   "description": "CKC Scent Detection & C-WAGS Rules Reference",
   "start_url": "./index.html",
@@ -7,18 +7,6 @@
   "background_color": "#000000",
   "theme_color": "#c85f00",
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
     {
       "src": "icon-1024.png",
       "sizes": "1024x1024",

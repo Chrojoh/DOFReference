@@ -1177,12 +1177,12 @@ function buildCKCFaults() {
 function buildCKCTitles() {
   var el = document.getElementById("ckc-titles-content");
   var mainTitles = [
-    {code:"SDIN",name:"Scent Detection Instinct",sub:"Optional entry-level - Containers only",bg:"#fff8ee",border:"#e8d0b0",cbg:"#7a5c00",opt:true,prereq:"None. Open to dogs without SDN title.",req:"One (1) qualifying score in Instinct Containers.",note:"Optional standalone title. Not required before Novice."},
-    {code:"SDN", name:"Scent Detection Novice",  sub:"First full class title - all three Novice components",bg:"#f0f8f0",border:"#b0d0b0",cbg:"#1e5c30",opt:false,prereq:"None. Open to all dogs without SDO title.",req:"1 qualifying score: Novice Containers + Novice Interior + Novice Exterior.",note:"Scores do not have to be from the same trial."},
-    {code:"SDO", name:"Scent Detection Open",    sub:"All three Open components required",bg:"#f0f0f8",border:"#b0b8d0",cbg:"#1a4a7a",opt:false,prereq:"Must first obtain SDN.",req:"1 qualifying score: Open Containers + Open Interior + Open Exterior.",note:"Scores do not have to be from the same trial."},
-    {code:"SDE", name:"Scent Detection Excellent",sub:"All three Excellent components required",bg:"#f8f0f8",border:"#d0b0d0",cbg:"#5a2a78",opt:false,prereq:"Must first obtain SDO.",req:"1 qualifying score: Excellent Containers + Interior + Exterior.",note:"Scores do not have to be from the same trial."},
-    {code:"SDM", name:"Scent Detection Master",  sub:"All three Master components required",bg:"#fdf0f0",border:"#d0b0b0",cbg:"#8a2020",opt:false,prereq:"Must first obtain SDE.",req:"1 qualifying score: Master Containers + Interior + Exterior.",note:"Scores do not have to be from the same trial."},
-    {code:"SDGM",name:"Scent Detection Grand Master",sub:"Ongoing achievement title after SDM",bg:"#1a1008",border:"#3a2a1a",cbg:"#c85f00",opt:false,dark:true,prereq:"Must first obtain SDM.",req:"Continue accumulating additional qualifying scores at Master level.",note:"The highest ongoing achievement title in CKC Scent Detection."}
+    {code:"SDIN",name:"Scent Detection Instinct",sub:"Optional entry-level - Containers only",bg:"#1e1600",border:"#e0b800",cbg:"#e0b800",opt:true,prereq:"None. Open to dogs without SDN title.",req:"One (1) qualifying score in Instinct Containers.",note:"Optional standalone title. Not required before Novice."},
+    {code:"SDN", name:"Scent Detection Novice",  sub:"First full class title - all three Novice components",bg:"#0a1a0a",border:"#28c060",cbg:"#28c060",opt:false,prereq:"None. Open to all dogs without SDO title.",req:"1 qualifying score: Novice Containers + Novice Interior + Novice Exterior.",note:"Scores do not have to be from the same trial."},
+    {code:"SDO", name:"Scent Detection Open",    sub:"All three Open components required",bg:"#0e1826",border:"#3090e0",cbg:"#3090e0",opt:false,prereq:"Must first obtain SDN.",req:"1 qualifying score: Open Containers + Open Interior + Open Exterior.",note:"Scores do not have to be from the same trial."},
+    {code:"SDE", name:"Scent Detection Excellent",sub:"All three Excellent components required",bg:"#180e20",border:"#b060e0",cbg:"#b060e0",opt:false,prereq:"Must first obtain SDO.",req:"1 qualifying score: Excellent Containers + Interior + Exterior.",note:"Scores do not have to be from the same trial."},
+    {code:"SDM", name:"Scent Detection Master",  sub:"All three Master components required",bg:"#1e0a0a",border:"#e03838",cbg:"#e03838",opt:false,prereq:"Must first obtain SDE.",req:"1 qualifying score: Master Containers + Interior + Exterior.",note:"Scores do not have to be from the same trial."},
+    {code:"SDGM",name:"Scent Detection Grand Master",sub:"Ongoing achievement title after SDM",bg:"#1a1008",border:"#ff8c30",cbg:"#ff8c30",opt:false,dark:true,prereq:"Must first obtain SDM.",req:"Continue accumulating additional qualifying scores at Master level.",note:"The highest ongoing achievement title in CKC Scent Detection."}
   ];
 
   var html = [
@@ -1190,11 +1190,11 @@ function buildCKCTitles() {
     '<div class="section-head" style="margin-bottom:10px">10.1 Class Titles</div>',
     '<p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:14px;font-weight:700">Class titles are earned by getting one (1) qualifying score in each of the three components at that class level. Qualifying scores do <em>not</em> have to be from the same trial.</p>',
     mainTitles.map(function(t) {
-      var dark = t.dark ? 'style="background:#1a1008"' : '';
-      var dc = t.dark ? 'style="color:#fff"' : '';
-      var ds = t.dark ? 'style="color:#9a8070"' : '';
-      var dv = t.dark ? 'style="color:#c89060"' : '';
-      var db = t.dark ? 'style="border-color:#3a2a1a"' : '';
+      var dark = '';
+      var dc = 'style="color:#ffffff;font-weight:900"';
+      var ds = 'style="color:#c0c0c0;font-weight:700"';
+      var dv = 'style="color:#e8e8e8;font-weight:700"';
+      var db = 'style="border-color:#333333"';
       return [
         '<div class="title-card">',
           '<div class="title-card-header" style="background:'+t.bg+';border-bottom:1px solid '+t.border+'">',
@@ -1222,7 +1222,7 @@ function buildCKCTitles() {
             '<div class="title-card-header" style="background:#0a1a0a;border-bottom:1px solid #308030">',
               '<div><div class="title-code-badge" style="color:#1e5c30">'+ct.code+'</div><div class="title-name">'+ct.name+'</div><div class="title-sub">'+ct.rule+'</div></div>',
             '</div>',
-            '<div class="title-card-body" style="background:var(--bg2)">',
+            '<div class="title-card-body" style="background:#181818">',
               '<div class="title-req-row"><span class="title-req-label">Requirement</span><span>1 qualifying score at each level (N/O/E/M) in this component only.</span></div>',
               '<div class="title-req-row"><span class="title-req-label">Order</span><span>Must complete in order: Novice &#8594; Open &#8594; Excellent &#8594; Master.</span></div>',
             '</div>',
@@ -1443,7 +1443,7 @@ function buildCWScents() {
 function buildCWTitles() {
   var el = document.getElementById("cw-titles-content");
   var series = [
-    {name:"Detective",color:"#8c6000",bg:"#fff8ee",classes:[
+    {name:"Detective",color:"#e0b800",bg:"#1a1500",classes:[
       {code:"CW-SP", cls:"Scent Patrol 1",req:"4 QQs from 2+ judges",prereq:"None"},
       {code:"CW-SD", cls:"Scent Detective 2",req:"4 QQs from 2+ judges",prereq:"None"},
       {code:"CW-SI", cls:"Scent Investigator 3",req:"4 QQs from 2+ judges",prereq:"CW-SP or CW-SD title"},
@@ -1451,14 +1451,14 @@ function buildCWTitles() {
       {code:"CW-SPI",cls:"Private Investigator",req:"4 QQs from 2+ judges",prereq:"CW-SSS title"},
       {code:"CW-SDD",cls:"Detective Diversions",req:"4 QQs from 2+ judges",prereq:"CW-SSS title"}
     ]},
-    {name:"Ranger",color:"#2e6b3e",bg:"#f0f8f0",classes:[
+    {name:"Ranger",color:"#28c060",bg:"#0a1a0a",classes:[
       {code:"CW-ScR1",cls:"Scent Ranger 1",req:"4 QQs from 2+ judges",prereq:"None"},
       {code:"CW-ScR2",cls:"Scent Ranger 2",req:"4 QQs from 2+ judges",prereq:"CW-ScR1 title"},
       {code:"CW-ScR3",cls:"Scent Ranger 3",req:"4 QQs from 2+ judges",prereq:"CW-ScR2 title"},
       {code:"CW-ScR4",cls:"Scent Ranger 4",req:"4 QQs from 2+ judges",prereq:"CW-ScR3 title"},
       {code:"CW-ScR5",cls:"Scent Ranger 5",req:"4 QQs from 2+ judges",prereq:"CW-ScR4 title"}
     ]},
-    {name:"Dasher",color:"#1a4a7a",bg:"#f0f0f8",classes:[
+    {name:"Dasher",color:"#3090e0",bg:"#0e1826",classes:[
       {code:"CW-DS3",cls:"Dasher Scent 3",req:"4 QQs from 2+ judges",prereq:"Recommended: Investigator 3 mastery"},
       {code:"CW-DS4",cls:"Dasher Scent 4",req:"4 QQs from 2+ judges",prereq:"CW-DS3 title"},
       {code:"CW-DS5",cls:"Dasher Scent 5",req:"4 QQs from 2+ judges",prereq:"CW-DS4 title"},
@@ -1471,19 +1471,19 @@ function buildCWTitles() {
     series.map(function(ser) {
       return [
         '<div class="title-card" style="margin-bottom:16px">',
-          '<div class="title-card-header" style="background:'+ser.bg+';border-bottom:1px solid '+ser.color+'40">',
-            '<div class="title-code-badge" style="color:'+ser.color+'">'+ser.name+'</div>',
-            '<div><div class="title-name">'+ser.name+' Series &mdash; Title Path</div></div>',
+          '<div class="title-card-header" style="background:#1a1a1a;border-bottom:2px solid '+ser.color+'">',
+            '<div class="title-code-badge" style="color:'+ser.color+';font-weight:900">'+ser.name+'</div>',
+            '<div><div class="title-name" style="color:#ffffff;font-weight:900">'+ser.name+' Series &mdash; Title Path</div></div>',
           '</div>',
-          '<div class="title-card-body" style="background:var(--bg2)">',
+          '<div class="title-card-body" style="background:#181818">',
             '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px">',
               ser.classes.map(function(c) {
                 return [
-                  '<div style="background:'+ser.color+'0a;border:1px solid '+ser.color+'30;border-radius:4px;padding:10px 12px">',
+                  '<div style="background:#1e1e1e;border:1px solid '+ser.color+'80;border-radius:4px;padding:10px 12px">',
                     '<div style="font-family:Source Code Pro,monospace;font-size:11px;font-weight:700;color:'+ser.color+';margin-bottom:4px">'+c.code+'</div>',
-                    '<div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">'+c.cls+'</div>',
-                    '<div style="font-size:12px;color:var(--text3)">'+c.req+'</div>',
-                    (c.prereq ? '<div style="font-size:11px;color:#803020;margin-top:4px;font-family:Source Code Pro,monospace">&#128274; '+c.prereq+'</div>' : ''),
+                    '<div style="font-size:13px;font-weight:800;color:#ffffff;margin-bottom:4px">'+c.cls+'</div>',
+                    '<div style="font-size:12px;color:#c0c0c0;font-weight:700">'+c.req+'</div>',
+                    (c.prereq ? '<div style="font-size:11px;color:#ff8080;margin-top:4px;font-family:Source Code Pro,monospace;font-weight:700">&#128274; '+c.prereq+'</div>' : ''),
                   '</div>'
                 ].join("");
               }).join(""),

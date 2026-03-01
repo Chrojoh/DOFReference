@@ -848,16 +848,9 @@ function doInstall() {
     _installPrompt.prompt();
     _installPrompt.userChoice.then(() => { _installPrompt = null; });
   } else if (_isIOS) {
-    alert('To install on iPhone/iPad:
-
-1. Tap the Share button (box with ↑ arrow) at the bottom of Safari
-2. Scroll down and tap "Add to Home Screen"
-3. Tap "Add"
-
-The app will then work offline.');
+    alert('To install on iPhone/iPad:\n\n1. Tap the Share button (box with ↑ arrow) at the bottom of Safari\n2. Scroll down and tap \"Add to Home Screen\"\n3. Tap \"Add\"\n\nThe app will then work offline.');
   } else {
-    alert('To install:
-Open your browser menu (⋮ or ···) and tap "Install app" or "Add to Home Screen".');
+    alert('To install:\nOpen your browser menu (⋮ or ···) and tap \"Install app\" or \"Add to Home Screen\".');
   }
 }
 window.addEventListener('appinstalled', () => {
@@ -1804,9 +1797,6 @@ ckcRenderRules();
 
 
 // ══ C-WAGS DATA & FUNCTIONS ══════════════════════════════════════════════
-let rulesState = { discipline:'Scent', series:'Detective', classKey:'patrol1' };
-window.rulesState = rulesState;
-
 const CWAGS_CLASSES = {
   // ── DETECTIVE SERIES ────────────────────────────────────────
   patrol1: {
@@ -2394,6 +2384,8 @@ const SCENT_META = {
 // ── STATE ────────────────────────────────────────────────────
 let rulesState = { discipline:"Scent", series:"Detective", classKey:"patrol1" };
 
+
+window.rulesState = rulesState;
 
 // ── HELPERS ──────────────────────────────────────────────────
 function fmtTime(s) {

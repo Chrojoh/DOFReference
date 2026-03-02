@@ -447,8 +447,8 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
   <div class="tabs" style="background:#1a1a1a;border-bottom-color:#2a2a2a">
     <div class="tab active" data-tab="rules" data-app="cw">Rules</div>
-    <div class="tab" data-tab="faults" data-app="cw">Faults</div>
     <div class="tab" data-tab="scents" data-app="cw">Scents</div>
+    <div class="tab" data-tab="faults" data-app="cw">Faults</div>
     <div class="tab" data-tab="titles" data-app="cw">Titles</div>
   </div>
   <div id="cw-page-rules" class="page active">
@@ -491,8 +491,8 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
   <div class="tabs" style="background:#001520">
     <div class="tab active" data-tab="rules" data-app="sd">Rules</div>
-    <div class="tab" data-tab="faults" data-app="sd">Faults</div>
     <div class="tab" data-tab="scents" data-app="sd">Scents</div>
+    <div class="tab" data-tab="faults" data-app="sd">Faults</div>
     <div class="tab" data-tab="titles" data-app="sd">Titles</div>
     <div class="tab" data-tab="games" data-app="sd">Games</div>
   </div>
@@ -1668,7 +1668,7 @@ function buildCWFaults() {
 function buildCWScents() {
   var el = document.getElementById("cw-scents-content");
   var scents = [
-    {name:"Birch",code:"B",cls:"pill-birch",latin:"Betula spp.",intro:"All series - Level 1",note:"Foundational scent used from the first level in all three series."},
+    {name:"Birch",code:"B",cls:"pill-birch",latin:"Betula lenta.",intro:"All series - Level 1",note:"Foundational scent used from the first level in all three series."},
     {name:"Cypress",code:"Cy",cls:"pill-cypress",latin:"Cupressus sempervirens",intro:"All series - Level 1",note:"Paired with Birch from the very first class. Both active simultaneously from Level 1."},
     {name:"Clove Bud",code:"CL",cls:"pill-clovebud",latin:"Syzygium aromaticum",intro:"Detective 2 / Ranger 2 / Dasher 3",note:"Added at second level. C-WAGS specifies Clove Bud (flower bud), not leaf or stem."},
     {name:"Anise",code:"A",cls:"pill-anise",latin:"Pimpinella anisum",intro:"Detective 3 / Ranger 3 / Dasher 3+",note:"Same scent as CKC Anise. Introduced at the intermediate level across all series."}

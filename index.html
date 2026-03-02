@@ -559,7 +559,7 @@ var CKC = {
     containers:{
       numContainers:5,containerType:"Identical boxes",arrangement:"1 row of 5",
       minDist:"30 cm (12 in) between boxes",
-      numHides:"1 (known)",timeLimit:"2 minutes",distractions:"None",
+      numHides:"1 Hide",timeLimit:"2 minutes",distractions:"None",
       calls:"Alert only",areaM:"23-37",areaFt:"250-400",multiArea:false,callFinish:false,
       notes:["Five identical box containers in one row on the floor.",
              "One container holds Wintergreen odour.",
@@ -571,15 +571,15 @@ var CKC = {
     name:"Novice",scents:["Wintergreen"],color:"#1e5c30",
     containers:{
       numContainers:10,containerType:"Identical boxes",arrangement:"2 rows of 5",
-      minDist:"30 cm between boxes; 91 cm between rows",
-      numHides:"1 (known)",timeLimit:"2 minutes",distractions:"None",
+      minDist:"12 inches between boxes; 91 cm between rows",
+      numHides:"1 Hide",timeLimit:"2 minutes",distractions:"None",
       calls:"Alert only",areaM:"23-37",areaFt:"250-400",multiArea:false,callFinish:false,
       notes:["10 identical boxes in two rows of 5.",
              "One container holds Wintergreen odour.",
              "Handler calls Alert when dog indicates."]
     },
     interior:{
-      numHides:"1 (known)",timeLimit:"3 minutes",maxHeight:"61 cm (24 in)",
+      numHides:"1 Hide",timeLimit:"3 minutes",maxHeight:"61 cm (24 in)",
       distractions:"None",calls:"Alert only",areaM:"9.3-18.6",areaFt:"100-200",
       multiArea:false,numAreas:1,callFinish:false,accessible:"Accessible only",
       notes:["Indoor room or enclosed tent with 4 walls.",
@@ -587,7 +587,7 @@ var CKC = {
              "No intentional distractions at this level."]
     },
     exterior:{
-      numHides:"1 (known)",timeLimit:"4 minutes",maxHeight:"61 cm (24 in)",
+      numHides:"1 Hide",timeLimit:"4 minutes",maxHeight:"61 cm (24 in)",
       distractions:"None",calls:"Alert only",areaM:"18.6-37",areaFt:"200-400",
       multiArea:false,callFinish:false,accessible:"Accessible only",
       notes:["Outdoor search; max 2 walls if covered.",
@@ -599,8 +599,8 @@ var CKC = {
     name:"Open",scents:["Wintergreen","Pine"],color:"#1a4a7a",
     containers:{
       numContainers:15,containerType:"Various size and type",arrangement:"3 rows of 5, circle, or U",
-      minDist:"30 cm between containers; 91 cm between rows",
-      numHides:"2 (known)",timeLimit:"2 minutes",distractions:"1 Toy",
+      minDist:"12 inches between containers; 91 cm between rows",
+      numHides:"2 Hides",timeLimit:"2 minutes",distractions:"1 Toy",
       calls:"2x Alert",areaM:"37-56",areaFt:"400-600",multiArea:false,callFinish:false,
       notes:["15 containers of various sizes and types.",
              "2 hides - Wintergreen and/or Pine.",
@@ -608,7 +608,7 @@ var CKC = {
              "Time stops after second Alert."]
     },
     interior:{
-      numHides:"2 (known)",timeLimit:"3 minutes",maxHeight:"91 cm (36 in)",
+      numHides:"2 Hides",timeLimit:"3 minutes",maxHeight:"91 cm (36 in)",
       distractions:"1 Toy",calls:"2x Alert",areaM:"18.6-37",areaFt:"200-400",
       multiArea:false,callFinish:false,accessible:"Accessible only",
       notes:["2 known hides - Wintergreen and/or Pine.",
@@ -616,7 +616,7 @@ var CKC = {
              "1 toy distraction in search area."]
     },
     exterior:{
-      numHides:"2 (known)",timeLimit:"4 minutes",maxHeight:"91 cm (36 in)",
+      numHides:"2 Hides",timeLimit:"4 minutes",maxHeight:"91 cm (36 in)",
       distractions:"1 Toy",calls:"2x Alert",areaM:"37-74",areaFt:"400-800",
       multiArea:false,callFinish:false,accessible:"Accessible only",
       notes:["2 known hides - Wintergreen and/or Pine.",
@@ -628,8 +628,8 @@ var CKC = {
     name:"Excellent",scents:["Wintergreen","Pine","Anise"],color:"#5a2a78",
     containers:{
       numContainers:20,containerType:"Various size and type",arrangement:"4 rows of 5, circle, or U",
-      minDist:"30 cm between containers; 91 cm between rows",
-      numHides:"3 (known)",timeLimit:"3 minutes",distractions:"2 (Toy or Food)",
+      minDist:"12 inches between containers; 91 cm between rows",
+      numHides:"3 Hides",timeLimit:"3 minutes",distractions:"2 (Toy or Food)",
       calls:"3x Alert",areaM:"56-74",areaFt:"600-800",multiArea:false,callFinish:false,
       notes:["20 containers of various sizes and types.",
              "3 hides - Wintergreen, Pine, and/or Anise.",
@@ -637,8 +637,8 @@ var CKC = {
              "Time stops after third Alert."]
     },
     interior:{
-      numHides:"3 known total (split across 2 areas - distribution unknown)",
-      timeLimit:"3 minutes per area",maxHeight:"122 cm (48 in)",
+      numHides:"3 Hides total (split across 2 areas - distribution unknown)",
+      timeLimit:"3 minutes per area, timer stops between",maxHeight:"122 cm (48 in)",
       distractions:"2 (Toy or Food)",calls:"3x Alert total + Finish per area",
       areaM:"37-74 total",areaFt:"400-800 total",
       multiArea:true,numAreas:2,callFinish:true,accessible:"1 hide may be inaccessible",
@@ -650,7 +650,7 @@ var CKC = {
              "Max hide height 122 cm (48 in) from floor."]
     },
     exterior:{
-      numHides:"3 (known; 1 may be inaccessible)",timeLimit:"5 minutes",maxHeight:"122 cm (48 in)",
+      numHides:"3 (1 may be inaccessible)",timeLimit:"5 minutes",maxHeight:"122 cm (48 in)",
       distractions:"2 (Toy or Food)",calls:"3x Alert (stops clock after 3rd)",
       areaM:"74-139",areaFt:"800-1500",multiArea:false,callFinish:false,
       accessible:"1 hide may be inaccessible",
@@ -664,7 +664,7 @@ var CKC = {
     name:"Master",scents:["Wintergreen","Pine","Anise","Clove"],color:"#8a2020",
     containers:{
       numContainers:20,containerType:"Various size and type",arrangement:"4 rows of 5, circle, or U",
-      minDist:"30 cm between containers; 91 cm between rows",
+      minDist:"12 inches between containers; 91 cm between rows",
       numHides:"1-3 (UNKNOWN number)",timeLimit:"3 minutes",
       distractions:"3 (Toy, Food, or Human)",
       calls:"Alert(s) + Finish or Clear",areaM:"56-74",areaFt:"600-800",
@@ -682,7 +682,7 @@ var CKC = {
       calls:"Alert(s) + Finish or Clear per area",
       areaM:"56-93 total",areaFt:"600-1000 total",
       multiArea:true,numAreas:"2-3",callFinish:true,
-      accessible:"All hides may be inaccessible",
+      accessible:"ALL HIDES MAY BE INACCESSIBLE",
       notes:["Handler does NOT know exact number of hides (max 3 across all areas).",
              "2 to 3 distinct search areas, each timed at 3 minutes independently.",
              "One area may be blank (no hide).",
@@ -695,7 +695,7 @@ var CKC = {
       distractions:"3 (Toy, Food, or Human)",
       calls:"Alert(s) + Finish or Clear",
       areaM:"139-186",areaFt:"1500-2000",multiArea:false,callFinish:true,
-      accessible:"All hides may be inaccessible",
+      accessible:"ALL HIDES MAY BE INACCESSIBLE",
       notes:["Handler does NOT know exact number of hides (1, 2, or 3).",
              "Any or all hides may be inaccessible.",
              "3 distractions - toy, food, or human.",
@@ -923,7 +923,7 @@ var SDDA = {
       arrangement:"Single grid, min 92 cm (3 ft) apart",minDist:"92 cm (3 ft) between boxes",
       areaFt:"Min 400",
       notes:["Must be indoors.",
-             "Boxes min 92 cm apart; max 30 cm (12 in) height. No blank areas.",
+             "Boxes min 3 feet apart; max 30 cm (12 in) height. No blank areas.",
              "Single scented swab in hide box.",
              "No formal Alert required - dog finding hide is sufficient at Started level."]
     },
@@ -978,7 +978,7 @@ var SDDA = {
     containers:{
       numHides:"3",timeLimit:"4 min",distractions:"1-2 (contained)",calls:"3x Alert / Find",callFinish:false,
       numContainers:"16-20 vented opaque containers",containerType:"Vented opaque (may have visible or no holes)",
-      arrangement:"Min 30 cm (1 ft) apart",minDist:"30 cm (1 ft) between containers",
+      arrangement:"Min 12 inches apart",minDist:"12 inches between containers",
       areaFt:"Min 400",
       notes:["At least 1 Thyme hide required.",
              "1-2 distractors allowed (in enclosed containers).",
@@ -1014,7 +1014,7 @@ var SDDA = {
       numHides:"2-4 (UNKNOWN to handler)",timeLimit:"4 min",distractions:"1-3 (contained)",
       calls:"Alert/Find per hide + Finish/Done or Clear",callFinish:true,
       numContainers:"16-20 containers (any material)",containerType:"Any material (with or without holes)",
-      arrangement:"Min 30 cm apart; may be raised or placed under furniture",minDist:"30 cm",
+      arrangement:"Min 12 inches apart; may be raised or placed under furniture",minDist:"12 inches",
       areaFt:"Min 400",
       notes:["HANDLER DOES NOT KNOW HOW MANY HIDES (2-4).",
              "Any absorbent material may be used for hides (not just cotton swabs).",

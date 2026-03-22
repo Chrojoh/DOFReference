@@ -354,11 +354,8 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
 #cdsa-app .cdsa-header-title span{color:var(--cdsa-green2)}
 #cdsa-app .cdsa-header-sub{font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;margin-top:3px}
 #cdsa-app .cdsa-header-badge{margin-left:auto;font-family:'Source Code Pro',monospace;font-size:9px;color:var(--text3);letter-spacing:2px;text-align:right;line-height:1.8}
-#cdsa-app .cdsa-tabs{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;background:var(--bg2);border-top:1px solid var(--border)}
-#cdsa-app .cdsa-tab{flex:1;padding:11px 4px 10px;font-family:'Source Code Pro',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;color:var(--text3);cursor:pointer;border:none;background:none;border-top:2px solid transparent;transition:all 0.15s}
-#cdsa-app .cdsa-tab:hover{color:var(--cdsa-green2);background:var(--bg)}
-#cdsa-app .cdsa-tab.active{color:var(--cdsa-green2);border-top-color:var(--cdsa-green);background:var(--bg)}
-#cdsa-app .cdsa-page{display:none;padding:20px;max-width:1100px;margin:0 auto;padding-bottom:72px}
+#cdsa-app .tab.active{color:var(--cdsa-green2)!important;border-bottom-color:var(--cdsa-green)!important}
+#cdsa-app .cdsa-page{display:none;padding:20px;max-width:1100px;margin:0 auto}
 #cdsa-app .cdsa-page.active{display:block}
 #cdsa-app .cdsa-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:16px}
 #cdsa-app .cdsa-card-header{padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:10px}
@@ -573,6 +570,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
 <!-- CDSA APP -->
 <div id="cdsa-app" style="display:none">
   <div class="cdsa-header">
+    <button id="cdsa-logo-btn" onclick="goSplash()" style="background:none;border:none;cursor:pointer;padding:4px 10px 4px 0;color:var(--text3);font-size:18px;line-height:1;flex-shrink:0" title="Back">&#8592;</button>
     <div>
       <div class="cdsa-header-title">CDSA <span>Detection Sport</span></div>
       <div class="cdsa-header-sub">Canine Detection Sport Association · Rules Reference</div>
@@ -581,7 +579,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
 
   <!-- ── CLASS RULES PAGE ── -->
-  <div id="cdsa-rules-page" class="cdsa-page active">
+  <div id="cdsa-page-rules" class="page active">
     <div class="cdsa-section-head">Select Level</div>
     <div class="level-btn-row" id="cdsa-level-btns">
       <button class="level-btn active" onclick="cdsaLevel('amateur')">Amateur</button>
@@ -594,7 +592,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
 
   <!-- ── SCENTS PAGE ── -->
-  <div id="cdsa-scents-page" class="cdsa-page">
+  <div id="cdsa-page-scents" class="page">
     <div class="cdsa-section-head">Target Scents &amp; Odours</div>
     <div class="cdsa-card">
       <div class="cdsa-card-header">
@@ -630,7 +628,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
 
   <!-- ── FAULTS PAGE ── -->
-  <div id="cdsa-faults-page" class="cdsa-page">
+  <div id="cdsa-page-faults" class="page">
     <div class="cdsa-section-head">Faults &amp; Non-Qualifying Scores</div>
     <div class="cdsa-card">
       <div class="cdsa-card-header"><span class="cdsa-card-title">⚠ Faults</span><span class="cdsa-card-badge">3rd fault = NQ</span></div>
@@ -647,17 +645,17 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
 
   <!-- ── TITLES PAGE ── -->
-  <div id="cdsa-titles-page" class="cdsa-page">
+  <div id="cdsa-page-titles" class="page">
     <div class="cdsa-section-head">Titles &amp; Awards</div>
     <div id="cdsa-titles-output"></div>
   </div>
 
-  <!-- Bottom tab bar -->
-  <div class="cdsa-tabs">
-    <button class="cdsa-tab active" onclick="cdsaTab('rules')">Class Rules</button>
-    <button class="cdsa-tab" onclick="cdsaTab('scents')">Scents</button>
-    <button class="cdsa-tab" onclick="cdsaTab('faults')">Faults Guide</button>
-    <button class="cdsa-tab" onclick="cdsaTab('titles')">Titles</button>
+  <!-- Top tab bar (matches CKC / C-WAGS / SDDA pattern) -->
+  <div class="tabs" style="background:#0d1f10">
+    <div class="tab active" data-tab="rules" data-app="cdsa">Class Rules</div>
+    <div class="tab" data-tab="scents" data-app="cdsa">Scents</div>
+    <div class="tab" data-tab="faults" data-app="cdsa">Faults Guide</div>
+    <div class="tab" data-tab="titles" data-app="cdsa">Titles</div>
   </div>
 </div><!-- /cdsa-app -->
 
@@ -1310,7 +1308,7 @@ function switchTabs(app, name) {
     t.style.color = "";
     t.style.borderBottomColor = "";
   });
-  var prefix = app === "ckc" ? "ckc" : app === "cw" ? "cw" : "sd";
+  var prefix = app === "ckc" ? "ckc" : app === "cw" ? "cw" : app === "cdsa" ? "cdsa" : "sd";
   var pages = document.querySelectorAll("#"+app+"-app .page");
   pages.forEach(function(p) { p.classList.remove("active"); });
   var pg = document.getElementById(prefix+"-page-"+name);
@@ -2555,6 +2553,9 @@ document.querySelectorAll(".tab[data-app='cw']").forEach(function(t) {
 document.querySelectorAll(".tab[data-app='sd']").forEach(function(t) {
   t.onclick = function() { switchTabs("sd", t.getAttribute("data-tab")); };
 });
+document.querySelectorAll(".tab[data-app='cdsa']").forEach(function(t) {
+  t.onclick = function() { switchTabs("cdsa", t.getAttribute("data-tab")); };
+});
 </script>
 <script>
 // ══════════════════════════════════════════════════════════════
@@ -2679,14 +2680,7 @@ var _cdsaInited       = false;
 // ── Tab switcher ───────────────────────────────────────────────
 function cdsaTab(tab) {
   _cdsaCurrentTab = tab;
-  document.querySelectorAll('#cdsa-app .cdsa-tab').forEach(function(t, i) {
-    var tabs = ['rules','scents','faults','titles'];
-    t.classList.toggle('active', tabs[i] === tab);
-  });
-  document.querySelectorAll('#cdsa-app .cdsa-page').forEach(function(p) { p.classList.remove('active'); });
-  var pageMap = { rules:'cdsa-rules-page', scents:'cdsa-scents-page', faults:'cdsa-faults-page', titles:'cdsa-titles-page' };
-  var pg = document.getElementById(pageMap[tab]);
-  if (pg) pg.classList.add('active');
+  switchTabs("cdsa", tab);
 }
 
 // ── Level selector ─────────────────────────────────────────────
@@ -2786,5 +2780,6 @@ function cdsaInit() {
   }
   cdsaTab(_cdsaCurrentTab);
 }
+</script>
 </body>
 </html>

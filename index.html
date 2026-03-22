@@ -36,13 +36,14 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   position:fixed;inset:0;z-index:1000;
   background:#000;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:0;padding:32px 24px;
+  gap:0;padding:24px 20px;
+  overflow-y:auto;
   transition:opacity 0.6s ease,transform 0.6s ease;
 }
 #splash.hidden{opacity:0;pointer-events:none;transform:scale(1.04)}
 .splash-logo{
-  width:min(220px,55vw);height:min(220px,55vw);border-radius:32px;
-  overflow:hidden;margin-bottom:32px;
+  width:min(180px,42vw);height:min(180px,42vw);border-radius:28px;
+  overflow:hidden;margin-bottom:20px;flex-shrink:0;
   box-shadow:0 0 80px #c85f0060,0 0 160px #c85f0020;
   animation:logoReveal 0.9s ease-out;
 }
@@ -50,7 +51,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
 @keyframes logoReveal{from{opacity:0;transform:scale(0.6) translateY(30px)}to{opacity:1;transform:none}}
 .splash-title{
   font-family:Playfair Display,serif;
-  font-size:clamp(28px,6vw,42px);font-weight:900;
+  font-size:clamp(24px,5.5vw,42px);font-weight:900;
   color:#fff;text-align:center;line-height:1.1;
   animation:fadeUp 0.8s 0.2s ease-out both;
 }
@@ -58,24 +59,25 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
 .splash-sub{
   font-family:Source Code Pro,monospace;
   font-size:10px;letter-spacing:3px;color:#a0a0a0;
-  text-transform:uppercase;margin-top:10px;margin-bottom:44px;
+  text-transform:uppercase;margin-top:8px;margin-bottom:28px;
   animation:fadeUp 0.8s 0.3s ease-out both;
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .splash-label{
   font-family:Source Code Pro,monospace;
   font-size:9px;letter-spacing:4px;color:#888888;
-  text-transform:uppercase;margin-bottom:20px;
+  text-transform:uppercase;margin-bottom:14px;
   animation:fadeUp 0.8s 0.4s ease-out both;
 }
 .org-btns{
-  display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px;
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:340px;
   animation:fadeUp 0.8s 0.5s ease-out both;
 }
 .org-btn{
-  position:relative;overflow:hidden;width:100%;
-  padding:20px 28px;border-radius:6px;cursor:pointer;border:none;
-  display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+  position:relative;overflow:hidden;
+  aspect-ratio:1/1;
+  padding:18px 16px;border-radius:10px;cursor:pointer;border:none;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:3px;
   transition:transform 0.15s,box-shadow 0.15s;
 }
 .org-btn:hover{transform:translateY(-2px)}
@@ -83,10 +85,24 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
 .org-btn.ckc{background:linear-gradient(135deg,#c85f00,#a84f00);box-shadow:0 4px 28px #c85f0045}
 .org-btn.cwags{background:linear-gradient(135deg,#a06800,#7a5000);box-shadow:0 4px 28px #a0680045}
 .org-btn.sdda{background:linear-gradient(135deg,#006880,#004860);box-shadow:0 4px 28px #00688045}
+@media(max-height:700px){
+  .splash-logo{width:min(110px,28vw);height:min(110px,28vw);margin-bottom:12px;border-radius:18px}
+  .splash-title{font-size:clamp(20px,5vw,28px)}
+  .splash-sub{margin-top:5px;margin-bottom:14px;font-size:9px;letter-spacing:2px}
+  .splash-label{margin-bottom:8px}
+  .org-btn{padding:14px 12px;gap:2px}
+  .org-btns{gap:8px}
+}
+@media(max-height:580px){
+  .splash-logo{display:none}
+  .splash-sub{margin-bottom:10px}
+  .org-btn{padding:10px 10px}
+  .org-btns{gap:6px}
+}
 .org-btn.cdsa{background:linear-gradient(135deg,#2a7a3a,#1a5a28);box-shadow:0 4px 28px #2a7a3a45}
-.org-btn-code{font-family:Playfair Display,serif;font-size:24px;font-weight:900;color:#fff}
-.org-btn-name{font-family:Source Code Pro,monospace;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,1.0);text-transform:uppercase}
-.org-btn-desc{font-family:Crimson Pro,serif;font-size:13px;color:rgba(255,255,255,0.85);font-style:italic}
+.org-btn-code{font-family:Playfair Display,serif;font-size:28px;font-weight:900;color:#fff}
+.org-btn-name{font-family:Source Code Pro,monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,1.0);text-transform:uppercase}
+.org-btn-desc{font-family:Crimson Pro,serif;font-size:12px;color:rgba(255,255,255,0.85);font-style:italic}
 .org-btn::after{
   content:'';position:absolute;inset:-100%;
   background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.12) 50%,transparent 60%);

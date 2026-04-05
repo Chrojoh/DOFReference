@@ -1874,7 +1874,8 @@ function buildCWFaults() {
          'Not crossing or starting correctly at the start line',
          'Moving a container or search item more than a few inches',
          'Safety issues - dog in unsafe situation',
-         'Minor handling issues (handler cues dog during judge Where query)'
+         'Minor handling issues (handler cues dog during judge Where query)',
+         'Handler calls Alert on incorrect location (1st occurrence)'
         ].map(function(f){return '<div class="fault-row"><span class="fi minor">&triangle;</span><span>'+f+'</span></div>';}).join(""),
       '</div>',
     '</div>',
@@ -1882,7 +1883,6 @@ function buildCWFaults() {
       '<div class="card-header"><div><div style="font-family:Source Code Pro,monospace;font-size:9px;letter-spacing:3px;color:#a06800;text-transform:uppercase;font-weight:700">NQ Faults</div><div class="card-title" style="color:#b03020">Non-Qualifying Faults</div><div class="card-code">Any NQ fault = non-qualifying performance</div></div><span class="badge badge-red" style="margin-top:4px">Immediate NQ</span></div>',
       '<div class="card-body">',
         ['2nd minor fault in the same search',
-         'Handler calls Alert on incorrect location',
          'Maximum time for the class exceeded',
          'Dog picks up, bites, or destroys a container/object',
          'Harsh handling or harsh corrections by the handler',

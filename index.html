@@ -419,6 +419,32 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
 </style>
 </head>
 <body>
+<aside class="pwa-tools" id="pwa-tools" aria-label="App options">
+  <details open>
+    <summary>App options</summary>
+    <div class="pwa-tools-content">
+      <div class="pwa-tools-actions">
+        <button type="button" id="pwa-install" hidden>Install app</button>
+        <button type="button" id="pwa-check">Check for updates</button>
+      </div>
+      <p id="pwa-status" role="status" aria-live="polite">Checking offline support…</p>
+      <small id="pwa-details">Open this app while connected to prepare its files for offline use.</small>
+      <div id="pwa-help" hidden>
+        <p><strong>Android:</strong> Open the browser menu (⋮) and choose Install app or Add to Home screen.</p>
+        <p><strong>iPhone/iPad:</strong> In Safari, tap Share, then Add to Home Screen.</p>
+      </div>
+    </div>
+  </details>
+</aside>
+<style id="pwa-tools-style">
+.pwa-tools{padding:10px 18px;background:#edf4fa;border-bottom:1px solid #ccdbe8;color:#24374b;font:14px/1.5 Arial,sans-serif}
+.pwa-tools details{max-width:1100px;margin:auto}.pwa-tools summary{cursor:pointer;font-weight:700}
+.pwa-tools-content{padding-top:8px}.pwa-tools-actions{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.pwa-tools button{background:#34495e;color:#fff;padding:9px 13px;border:0;border-radius:6px;font:inherit;cursor:pointer}
+.pwa-tools button:disabled{opacity:.55}.pwa-tools p{margin:6px 0}.pwa-tools small{display:block;color:#52657a}
+.pwa-tools [hidden]{display:none!important}
+</style><style id="pwa-legacy-hide">#install-bar,.install-header-btn,#pwa-install-btn,#install-app,.install-app{display:none!important}</style>
+
 
 <!-- SPLASH -->
 <div id="splash">
@@ -3374,6 +3400,49 @@ function exportUKC() {
   XLSX.utils.book_append_sheet(wb, ws, lvl.name+" "+ukcState.elem);
   XLSX.writeFile(wb, "UKC_Nosework_"+lvl.name+"_"+ukcState.elem+".xlsx");
 }
+</script>
+<script id="pwa-tools-script">
+(()=>{'use strict';
+const $=id=>document.getElementById(id), install=$('pwa-install'), check=$('pwa-check'), status=$('pwa-status'), details=$('pwa-details'), help=$('pwa-help');
+let promptEvent=null, registration=null, checking=false;
+const installed=()=>matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches||navigator.standalone===true;
+const say=(a,b)=>{status.textContent=a;details.textContent=b||'';};
+function updateInstall(){install.hidden=installed()||(!promptEvent&&!help.dataset.show);}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;install.hidden=installed();});
+window.addEventListener('appinstalled',()=>{promptEvent=null;install.hidden=true;say('App installed.','Open it from your home screen or app list.');});
+install.addEventListener('click',async()=>{
+ if(promptEvent){promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;install.hidden=true;return;}
+ help.hidden=!help.hidden;help.dataset.show=help.hidden?'':'1';install.hidden=installed();
+});
+async function inspect(){
+ if(!('serviceWorker'in navigator)){say('Offline support is not available in this browser.','Use a supported browser and open this app from its HTTPS website.');return;}
+ registration=await navigator.serviceWorker.getRegistration();
+ if(!registration){say('Offline setup has not started yet.','Keep this app open while connected to the internet, then check again.');return;}
+ const active=registration.active||registration.waiting||registration.installing;
+ if(!active){say('Offline setup is still starting.','Keep the app open and check again in a moment.');return;}
+ let entries=0,matching=false;
+ if('caches'in window){for(const key of await caches.keys()){const cache=await caches.open(key);const requests=await cache.keys();entries+=requests.length;if(requests.some(r=>new URL(r.url).origin===location.origin))matching=true;}}
+ if(navigator.onLine){say(matching?'Offline app files are saved on this device.':'Offline support is active; app files are still being prepared.',matching?entries+' cached files found. Open the app sections you use while online so they can be cached.':'Stay connected and leave this page open while files are cached.');}
+ else say(matching?'Offline mode is active; saved app files are available.':'You are offline, but no saved app files were found.','Reconnect and open the app to finish preparing offline use.');
+}
+check.addEventListener('click',async()=>{
+ if(checking)return;checking=true;check.disabled=true;
+ try{
+  registration=await navigator.serviceWorker.getRegistration();
+  if(!navigator.onLine){await inspect();return;}
+  if(!registration&&'serviceWorker'in navigator)registration=await navigator.serviceWorker.register('./sw.js');
+  if(registration){say('Checking for updates…','Please keep this app open.');await registration.update();await new Promise(r=>setTimeout(r,900));}
+  await inspect();
+  if(registration?.waiting){say('An app update is ready.','Reload the app to use the latest version.');}
+ }catch(e){say('Could not check for updates.',e.message||'Try again when connected.');}
+ finally{checking=false;check.disabled=false;}
+});
+window.addEventListener('online',inspect);window.addEventListener('offline',inspect);
+if(installed())install.hidden=true;
+if('serviceWorker'in navigator){navigator.serviceWorker.ready.then(r=>{registration=r;inspect();}).catch(inspect);}
+else inspect();
+updateInstall();
+})();
 </script>
 </body>
 </html>

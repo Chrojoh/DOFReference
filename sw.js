@@ -1,5 +1,5 @@
-const CACHE = "scent-rules-v2";
-const ASSETS = ["./index.html", "./icon.png", "./manifest.json"];
+const CACHE = "scent-rules-v3";
+const ASSETS = ["./index.html", "./icon-192.png", "./icon-512.png", "./manifest.json"];
 
 self.addEventListener("install", function(e) {
   e.waitUntil(

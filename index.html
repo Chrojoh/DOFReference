@@ -3435,6 +3435,7 @@ async function inspect(){
  say(ready?'Offline app files are saved on this device.':'Offline setup is not complete yet.',
  ready?entries+' required app resources are cached, including Excel export support.':'Connect to the internet and press Check for Updates to finish downloading the offline files.');
  showWaiting();
+ return ready;
 }
 function waitForInstall(worker){
  return new Promise(resolve=>{
@@ -3464,8 +3465,11 @@ check.addEventListener('click',async()=>{
   await registration.update();
   if(registration.installing)await waitForInstall(registration.installing);
   if(registration.waiting){showWaiting();return;}
-  await inspect();
-  if(!registration.installing)say('The app is up to date.','No new application version was found. Your saved reference is ready to use offline.');
+  const offlineReady=await inspect();
+  if(!registration.installing){
+   say(offlineReady?'The app is up to date.':'The app version is current, but offline setup is incomplete.',
+    offlineReady?'No new application version was found. Your saved reference is ready to use offline.':'The app shell is saved, but a required support file is missing. Keep the app online and try again.');
+  }
  }catch(e){say('Could not check for updates.',e&&e.message?e.message:'Reconnect and try again.');}
  finally{checking=false;check.disabled=false;}
 });

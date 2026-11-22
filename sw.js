@@ -1,10 +1,10 @@
-const CACHE = "scent-rules-v8";
+const CACHE = "scent-rules-v9";
 const SHELL = [
   "./",
   "./index.html",
-  "./manifest.json?v=8",
-  "./icon-192.png?v=8",
-  "./icon-512.png?v=8"
+  "./manifest.json?v=9",
+  "./icon-192.png?v=9",
+  "./icon-512.png?v=9"
 ];
 const XLSX_URL = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
 
@@ -48,6 +48,11 @@ self.addEventListener("fetch", event => {
 
   event.respondWith((async () => {
     const cache = await caches.open(CACHE);
+    // Resolve app navigation from the saved shell before attempting any network request.
+    if (request.mode === "navigate") {
+      const shell = await cache.match("./index.html");
+      if (shell) return shell;
+    }
     const cached = await cache.match(request);
     if (cached) return cached;
     try {

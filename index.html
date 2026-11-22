@@ -10,7 +10,7 @@
 <title>Scent Detection Rules Reference</title>
 <link rel="manifest" href="manifest.json?v=7">
 <link rel="apple-touch-icon" href="icon-192.png?v=7">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Code+Pro:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<!-- System font fallbacks keep the complete interface available offline. -->
 <style>
 :root{
   --bg:#0d0d0d; --bg2:#1a1a1a; --bg3:#242424;
@@ -426,6 +426,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
       <div class="pwa-tools-actions">
         <button type="button" id="pwa-install">Install / Add to Home Screen</button>
         <button type="button" id="pwa-check">Check for updates</button>
+        <button type="button" id="pwa-apply" hidden>Install app update</button>
       </div>
       <p id="pwa-status" role="status" aria-live="polite">Checking offline support…</p>
       <small id="pwa-details">Open this app while connected to prepare its files for offline use.</small>
@@ -803,7 +804,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" crossorigin="anonymous"></script>
 <script>
 // ================================================================
 // DATA
@@ -2650,9 +2651,7 @@ document.getElementById("ios-modal").onclick = function(e) {
   if (e.target === this) this.style.display = "none";
 };
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js").catch(function() {});
-}
+// Service worker registration is managed by the App options controller below.
 
 // ================================================================
 // EVENT LISTENERS
@@ -3403,44 +3402,94 @@ function exportUKC() {
 </script>
 <script id="pwa-tools-script">
 (()=>{'use strict';
-const $=id=>document.getElementById(id), install=$('pwa-install'), check=$('pwa-check'), status=$('pwa-status'), details=$('pwa-details'), help=$('pwa-help');
-let promptEvent=null, registration=null, checking=false;
+const $=id=>document.getElementById(id);
+const install=$('pwa-install'),check=$('pwa-check'),apply=$('pwa-apply'),status=$('pwa-status'),details=$('pwa-details'),help=$('pwa-help');
+let promptEvent=null,registration=null,checking=false,applyRequested=false;
 const installed=()=>matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches||navigator.standalone===true;
 const say=(a,b)=>{status.textContent=a;details.textContent=b||'';};
 function updateInstall(){install.hidden=installed();}
+function showWaiting(){apply.hidden=!registration?.waiting;if(registration?.waiting)say('An app update is ready.','Tap “Install app update” when you are ready. Your current reference remains available until you choose to install it.');}
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;install.hidden=installed();});
 window.addEventListener('appinstalled',()=>{promptEvent=null;install.hidden=true;say('App installed.','Open it from your home screen or app list.');});
 install.addEventListener('click',async()=>{
  if(promptEvent){promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;install.hidden=true;return;}
- help.hidden=!help.hidden;help.dataset.show=help.hidden?'':'1';install.hidden=installed();
+ help.hidden=!help.hidden;
 });
 async function inspect(){
- if(!('serviceWorker'in navigator)){say('Offline support is not available in this browser.','Use a supported browser and open this app from its HTTPS website.');return;}
+ if(!('serviceWorker'in navigator)){say('Offline support is not available in this browser.','Open this app from its HTTPS website in a supported browser.');return;}
  registration=await navigator.serviceWorker.getRegistration();
- if(!registration){say('Offline setup has not started yet.','Keep this app open while connected to the internet, then check again.');return;}
+ if(!registration){say('Offline setup is starting.','Keep this app open while connected so the application files can be saved.');return;}
  const active=registration.active||registration.waiting||registration.installing;
- if(!active){say('Offline setup is still starting.','Keep the app open and check again in a moment.');return;}
- let entries=0,matching=false;
- if('caches'in window){for(const key of await caches.keys()){const cache=await caches.open(key);const requests=await cache.keys();entries+=requests.length;if(requests.some(r=>new URL(r.url).origin===location.origin))matching=true;}}
- if(navigator.onLine){say(matching?'Offline app files are saved on this device.':'Offline support is active; app files are still being prepared.',matching?entries+' cached files found. Open the app sections you use while online so they can be cached.':'Stay connected and leave this page open while files are cached.');}
- else say(matching?'Offline mode is active; saved app files are available.':'You are offline, but no saved app files were found.','Reconnect and open the app to finish preparing offline use.');
+ if(!active){say('Offline setup is still starting.','Keep this app open and check again in a moment.');return;}
+ let entries=0,hasShell=false,hasXlsx=false;
+ if('caches'in window){
+  for(const key of await caches.keys()){
+   if(!key.startsWith('scent-rules-'))continue;
+   const cache=await caches.open(key),requests=await cache.keys();
+   entries+=requests.length;
+   if(requests.some(r=>new URL(r.url).pathname.endsWith('/index.html')||new URL(r.url).pathname.endsWith('/')))hasShell=true;
+   if(requests.some(r=>r.url.includes('/xlsx/0.18.5/xlsx.full.min.js')))hasXlsx=true;
+  }
+ }
+ const ready=hasShell&&hasXlsx;
+ say(ready?'Offline app files are saved on this device.':'Offline setup is not complete yet.',
+ ready?entries+' required app resources are cached, including Excel export support.':'Connect to the internet and press Check for Updates to finish downloading the offline files.');
+ showWaiting();
+}
+function waitForInstall(worker){
+ return new Promise(resolve=>{
+  if(!worker){resolve();return;}
+  if(worker.state==='installed'||worker.state==='activated'||worker.state==='redundant'){resolve();return;}
+  const done=()=>{worker.removeEventListener('statechange',changed);resolve();};
+  const changed=()=>{if(['installed','activated','redundant'].includes(worker.state))done();};
+  worker.addEventListener('statechange',changed);
+  setTimeout(done,15000);
+ });
 }
 check.addEventListener('click',async()=>{
- if(checking)return;checking=true;check.disabled=true;
+ if(checking)return;
+ checking=true;check.disabled=true;apply.hidden=true;
  try{
+  if(!navigator.onLine){say('You are offline.','Your saved reference remains available. Reconnect before checking for updates.');return;}
+  if(!('serviceWorker'in navigator)){say('Offline updates are not supported in this browser.','Open the app from its HTTPS website in a supported browser.');return;}
   registration=await navigator.serviceWorker.getRegistration();
-  if(!navigator.onLine){await inspect();return;}
-  if(!registration&&'serviceWorker'in navigator)registration=await navigator.serviceWorker.register('./sw.js');
-  if(registration){say('Checking for updates…','Please keep this app open.');await registration.update();await new Promise(r=>setTimeout(r,900));}
+  if(!registration){
+   say('Preparing offline app…','Downloading the app shell and required support files.');
+   registration=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});
+   await navigator.serviceWorker.ready;
+   await inspect();
+   return;
+  }
+  say('Checking for application updates…','Downloading and verifying the new app files. Keep this app open.');
+  await registration.update();
+  if(registration.installing)await waitForInstall(registration.installing);
+  if(registration.waiting){showWaiting();return;}
   await inspect();
-  if(registration?.waiting){say('An app update is ready.','Reload the app to use the latest version.');}
- }catch(e){say('Could not check for updates.',e.message||'Try again when connected.');}
+  if(!registration.installing)say('The app is up to date.','No new application version was found. Your saved reference is ready to use offline.');
+ }catch(e){say('Could not check for updates.',e&&e.message?e.message:'Reconnect and try again.');}
  finally{checking=false;check.disabled=false;}
 });
-window.addEventListener('online',inspect);window.addEventListener('offline',inspect);
+apply.addEventListener('click',()=>{
+ if(!registration?.waiting)return;
+ apply.disabled=true;applyRequested=true;
+ say('Installing app update…','The new version is being activated. The app will reopen when it is ready.');
+ registration.waiting.postMessage({type:'SKIP_WAITING'});
+});
+navigator.serviceWorker?.addEventListener('controllerchange',()=>{
+ if(applyRequested)location.reload();
+});
 if(installed())install.hidden=true;
-if('serviceWorker'in navigator){navigator.serviceWorker.ready.then(r=>{registration=r;inspect();}).catch(inspect);}
-else inspect();
+(async()=>{
+ if(!('serviceWorker'in navigator)){await inspect();return;}
+ try{
+  registration=await navigator.serviceWorker.getRegistration();
+  if(!registration){
+   registration=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});
+   await navigator.serviceWorker.ready;
+  }
+  await inspect();
+ }catch(e){say('Offline setup could not start.',e&&e.message?e.message:'Open the app while connected to the internet.');}
+})();
 updateInstall();
 })();
 </script>

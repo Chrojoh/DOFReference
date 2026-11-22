@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="Scent Rules">
 <meta name="theme-color" content="#0e0804">
 <title>Scent Detection Rules Reference</title>
-<link rel="manifest" href="manifest.json?v=8">
-<link rel="apple-touch-icon" href="icon-192.png?v=8">
+<link rel="manifest" href="manifest.json?v=9">
+<link rel="apple-touch-icon" href="icon-192.png?v=9">
 <!-- System font fallbacks keep the complete interface available offline. -->
 <style>
 :root{
@@ -450,7 +450,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
 <!-- SPLASH -->
 <div id="splash">
   <div class="splash-logo">
-    <img src="icon-192.png?v=8" alt="Scent Detection Rules Reference">
+    <img src="icon-192.png?v=9" alt="Scent Detection Rules Reference">
   </div>
   <div class="splash-title"><span>Scent Detection</span><br>Rules Reference</div>
   <div class="splash-sub">Trial Rules &amp; Quick Reference Guide</div>
@@ -804,7 +804,7 @@ body{background:var(--bg);color:var(--text);font-family:Crimson Pro,Georgia,seri
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" crossorigin="anonymous"></script>
+<!-- XLSX is loaded only when the user requests an Excel export. -->
 <script>
 // ================================================================
 // DATA
@@ -2420,9 +2420,43 @@ function buildSDDAGames() {
 }
 
 // ================================================================
+// Load the optional spreadsheet library only when an export is requested.
+// Never let a missing CDN connection delay opening or browsing the reference.
+var xlsxLoadPromise = null;
+function ensureXLSX() {
+  if (window.XLSX) return Promise.resolve(true);
+  if (!xlsxLoadPromise) {
+    xlsxLoadPromise = new Promise(function(resolve) {
+      var script = document.createElement("script");
+      var settled = false;
+      var finish = function(ok) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeout);
+        if (!ok) script.remove();
+        resolve(ok);
+      };
+      var timeout = setTimeout(function() { finish(false); }, 12000);
+      script.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+      script.crossOrigin = "anonymous";
+      script.onload = function() { finish(!!window.XLSX); };
+      script.onerror = function() { finish(false); };
+      document.head.appendChild(script);
+    }).then(function(ok) {
+      if (!ok) {
+        xlsxLoadPromise = null;
+        alert("Excel export support could not be loaded. Connect to the internet and try again, or open the app once online so the export library can be saved for offline use.");
+      }
+      return ok;
+    });
+  }
+  return xlsxLoadPromise;
+}
+
 // SDDA EXPORT
 // ================================================================
-function exportSDDA() {
+async function exportSDDA() {
+  if (!(await ensureXLSX())) return;
   var wb = XLSX.utils.book_new();
   var lvl = SDDA[sdState.level];
   var data = lvl[sdState.comp];
@@ -2465,7 +2499,8 @@ function exportSDDA() {
 // ================================================================
 // EXCEL EXPORT
 // ================================================================
-function exportCKC() {
+async function exportCKC() {
+  if (!(await ensureXLSX())) return;
   var wb = XLSX.utils.book_new();
   // Sheet 1: current class/component
   var cls  = CKC[ckcState.cls];
@@ -2536,7 +2571,8 @@ function exportCKC() {
   XLSX.writeFile(wb, "CKC_Scent_Detection_"+cls.name+"_"+comp+".xlsx");
 }
 
-function exportCW() {
+async function exportCW() {
+  if (!(await ensureXLSX())) return;
   var wb = XLSX.utils.book_new();
   var rule = CW[cwState.cls];
   var rows = [["C-WAGS Scent Detection - "+rule.series+" - "+rule.name],[]];
@@ -3377,7 +3413,8 @@ function buildUKCTitles() {
 }
 
 // ── UKC EXPORT ────────────────────────────────────────────────
-function exportUKC() {
+async function exportUKC() {
+  if (!(await ensureXLSX())) return;
   var wb = XLSX.utils.book_new();
   var lvl = UKC[ukcState.level];
   var data = lvl[ukcState.elem];

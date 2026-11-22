@@ -12,15 +12,17 @@ self.addEventListener("install", event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
     await cache.addAll(SHELL);
-    // Excel export is part of the app, so save its library for offline use too.
-    // A CDN failure must not discard an otherwise usable offline app shell.
-    try {
-      const response = await fetch(XLSX_URL, { mode: "cors", cache: "no-store" });
-      if (response.ok && response.type !== "opaque") {
-        await cache.put(XLSX_URL, response);
+    // Preserve a previously cached Excel library without making installation
+    // wait on a CDN. A first-time install must finish using local app files alone.
+    const oldCaches = await caches.keys();
+    for (const key of oldCaches) {
+      if (!key.startsWith("scent-rules-") || key === CACHE) continue;
+      const previous = await caches.open(key);
+      const savedXlsx = await previous.match(XLSX_URL);
+      if (savedXlsx) {
+        await cache.put(XLSX_URL, savedXlsx);
+        break;
       }
-    } catch (error) {
-      // The next manual update check can retry this required support file.
     }
   })());
 });
